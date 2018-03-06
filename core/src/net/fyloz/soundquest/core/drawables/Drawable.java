@@ -12,6 +12,8 @@ public interface Drawable {
 
 	void render(SoundQuest game, Vector2 pos);
 	
+	void render(SoundQuest game, float x, float y);
+	
 	void render(SoundQuest game, float x, float y, float width, float height);
 
 	TextureRegion getTextureRegion();

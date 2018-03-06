@@ -1,10 +1,7 @@
 package net.fyloz.soundquest.physics.worlds;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,27 +11,25 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 
-import net.fyloz.soundquest.Camera;
+import net.fyloz.soundquest.SoundQuest;
 import net.fyloz.soundquest.entities.Player;
+import net.fyloz.soundquest.entities.mapping.Map;
 import net.fyloz.soundquest.physics.WorldGenerator;
 import net.fyloz.soundquest.physics.events.ContactManager;
 import net.fyloz.soundquest.utils.ResourceManager;
 
 public class PhysicWorld implements ContactListener {
 	private World world;
-	private TiledMap map;
-	private OrthogonalTiledMapRenderer renderer;
-	private WorldGenerator gen;
+	private Map map;
 
 	private String id;
 
-	public PhysicWorld(String id) {
+	public PhysicWorld(SoundQuest game, String id) {
 		this.id = id;
 		world = new World(new Vector2(0, -20f), true);
 		world.setContactListener(new ContactManager());
 
-		map = new TmxMapLoader().load("maps/test.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map, 1 / 16f);
+		map = new Map(game, id);
 		updateCurrentWorld();
 	}
 
@@ -51,6 +46,10 @@ public class PhysicWorld implements ContactListener {
 	}
 
 	public TiledMap getTiledMap() {
+		return map.getTiledMap();
+	}
+
+	public Map getMap() {
 		return map;
 	}
 
@@ -62,9 +61,12 @@ public class PhysicWorld implements ContactListener {
 		world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 	}
 
-	public void render(Camera camera, SpriteBatch batch) {
-		renderer.setView(camera);
-		renderer.render();
+	public void render() {
+		map.render();
+	}
+
+	public void dispose() {
+		map.dispose();
 	}
 
 	@Override

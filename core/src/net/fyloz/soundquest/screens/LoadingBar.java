@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+import net.fyloz.soundquest.Logger;
 import net.fyloz.soundquest.SoundQuest;
 
 public class LoadingBar implements Screen {
@@ -45,17 +46,20 @@ public class LoadingBar implements Screen {
 
 		sr = new ShapeRenderer();
 
+		Logger.log(Logger.INFO, "Loading textures...");
 		manager.load("textures/others/SoundQuest.png", Texture.class);
 		manager.load("textures/collectables/note.png", Texture.class);
 		manager.load("textures/backgrounds/bg.png", Texture.class);
 		manager.load("textures/backgrounds/forest_bg.gif", Texture.class);
+		
 		manager.load("textures/gui/heart.png", Texture.class);
 		manager.load("textures/gui/heartlost.png", Texture.class);
-		
+		manager.load("textures/gui/options.txt", TextureAtlas.class);
+
 		manager.load("textures/entities/player/idle.png", Texture.class);
 		manager.load("textures/entities/player/jump.txt", TextureAtlas.class);
 		manager.load("textures/entities/player/walk.txt", TextureAtlas.class);
-		
+
 		manager.load("textures/traps/spikes.png", Texture.class);
 		manager.load("textures/traps/doublespikes.png", Texture.class);
 		manager.load("textures/traps/canon_base.png", Texture.class);
@@ -65,9 +69,17 @@ public class LoadingBar implements Screen {
 
 		manager.load("textures/entities/elevator.txt", TextureAtlas.class);
 
+		Logger.log(Logger.INFO, "Loading musics...");
 		manager.load("musics/dubstep.mp3", Music.class);
 		manager.load("musics/detective.wav", Music.class);
 
+		Logger.log(Logger.INFO, "Loading fonts...");
+		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/PoetsenOne-Regular.ttf"));
+		FreeTypeFontParameter param = new FreeTypeFontParameter();
+		param.size = 72;
+		game.addFont("PoetsenOne-Regular", gen.generateFont(param));
+
+		gen.dispose();
 	}
 
 	@Override

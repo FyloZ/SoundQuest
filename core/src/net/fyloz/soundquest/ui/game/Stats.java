@@ -1,4 +1,4 @@
-package net.fyloz.soundquest.ui;
+package net.fyloz.soundquest.ui.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
+import net.fyloz.soundquest.Camera.CameraType;
 import net.fyloz.soundquest.SoundQuest;
+import net.fyloz.soundquest.core.drawables.SpriteDrawable;
 import net.fyloz.soundquest.entities.Player;
 import net.fyloz.soundquest.utils.ResourceManager;
 
@@ -16,7 +18,7 @@ public class Stats {
 
 	private Player player;
 
-	private Sprite coinSprite;
+	private SpriteDrawable coinSprite;
 	private BitmapFont font24;
 
 	public Stats(SoundQuest game) {
@@ -24,7 +26,8 @@ public class Stats {
 
 		player = (Player) ResourceManager.getInstance().getEntitie("player");
 
-		coinSprite = new Sprite((Texture) game.manager.get("textures/collectables/note.png"));
+		Sprite sprite = new Sprite((Texture) game.manager.get("textures/collectables/note.png"));
+		coinSprite = new SpriteDrawable(sprite, CameraType.Static);
 
 		FreeTypeFontGenerator fontgen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/PoetsenOne-Regular.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -35,10 +38,11 @@ public class Stats {
 	}
 
 	public void render() {
-		game.batch.setProjectionMatrix(game.staticCamera.combined);
+		coinSprite.render(game, Gdx.graphics.getWidth() - 95, Gdx.graphics.getHeight() - 50, coinSprite.getWidth() * 1.5f + 1,
+				coinSprite.getHeight() * 1.5f);
 		game.batch.begin();
-		game.batch.draw(coinSprite, Gdx.graphics.getWidth() - 80, Gdx.graphics.getHeight() - 60, 30, 30);
-		font24.draw(game.batch, player.getCoinAmount() + "", Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40);
+		font24.draw(game.batch, player.getCoinAmount() + "", Gdx.graphics.getWidth() - 70,
+				Gdx.graphics.getHeight() - 38);
 		game.batch.end();
 	}
 

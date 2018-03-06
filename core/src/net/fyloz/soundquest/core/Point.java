@@ -1,5 +1,6 @@
 package net.fyloz.soundquest.core;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Point {
@@ -24,20 +25,30 @@ public class Point {
 		this.y = y;
 	}
 
-	public boolean isUnder(Vector2 point) {
+	public boolean isUnder(Point point) {
 		return y < point.y ? true : false;
 	}
 
-	public boolean isUpper(Vector2 point) {
+	public boolean isUpper(Point point) {
 		return y > point.y ? true : false;
 	}
 
-	public boolean isAtRight(Vector2 point) {
+	public boolean isAtRight(Point point) {
 		return x < point.x ? true : false;
 	}
 
-	public boolean isAtLeft(Vector2 point) {
+	public boolean isAtLeft(Point point) {
 		return x > point.x ? true : false;
+	}
+
+	public double angle(Point point) {
+		float deltaX = x - point.getX();
+		float deltaY = y - point.getY();
+		
+		if(deltaX == 0)
+			return 270;
+		// Calculer l'angle avec les deux cathètes -> arctan(y/x)
+		return Math.atan(deltaY / deltaX) * MathUtils.radiansToDegrees;
 	}
 
 	public float getX() {
@@ -46,5 +57,9 @@ public class Point {
 
 	public float getY() {
 		return y;
+	}
+
+	public Vector2 getVector() {
+		return new Vector2(x, y);
 	}
 }

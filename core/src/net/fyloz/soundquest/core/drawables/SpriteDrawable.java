@@ -13,9 +13,14 @@ public class SpriteDrawable implements Drawable {
 	private Sprite sprite;
 	private CameraType cameraType;
 
+	private float PPM = 1;
+
 	public SpriteDrawable(Texture texture, CameraType cameraType) {
 		this.sprite = new Sprite(texture);
 		this.cameraType = cameraType;
+
+		if (cameraType == CameraType.Dynamic)
+			PPM = 16f;
 	}
 
 	public SpriteDrawable(Sprite sprite, CameraType cameraType) {
@@ -29,7 +34,12 @@ public class SpriteDrawable implements Drawable {
 
 	@Override
 	public void render(SoundQuest game, Vector2 pos) {
-		render(game, pos.x, pos.y, getWidth() / game.PPM, getHeight() / game.PPM);
+		render(game, pos.x, pos.y, getWidth() / PPM, getHeight() / PPM);
+	}
+
+	@Override
+	public void render(SoundQuest game, float x, float y) {
+		render(game, x, y, getWidth() / PPM, getHeight() / PPM);
 	}
 
 	@Override
@@ -38,9 +48,8 @@ public class SpriteDrawable implements Drawable {
 			game.batch.setProjectionMatrix(game.staticCamera.combined);
 		if (cameraType == CameraType.Dynamic)
 			game.batch.setProjectionMatrix(game.dynamicCamera.combined);
-
 		game.batch.begin();
-		game.batch.draw(getTextureRegion(), x - (getWidth() / game.PPM / 2), y - (getHeight() / game.PPM / 2), width, height);
+		game.batch.draw(getTextureRegion(), x - (getWidth() / PPM / 2), y - (getHeight() / PPM / 2), width, height);
 		game.batch.end();
 	}
 

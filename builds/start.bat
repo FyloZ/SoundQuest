@@ -1,1 +1,1 @@
-java -jar 0.0.1.jar
+java -jar 0.0.2.jar

@@ -25,7 +25,6 @@ public class CanonTrap extends StaticEntitie {
 	private SoundQuest game;
 
 	private FixtureProperties properties;
-
 	private StaticEntitieBody body;
 
 	private SpriteDrawable canonBaseTexture;
@@ -85,7 +84,7 @@ public class CanonTrap extends StaticEntitie {
 	@Override
 	public void render() {
 
-		float canonPlayerWidth = getBody().getPosition().x - player.getPosition().x;
+		/**float canonPlayerWidth = getBody().getPosition().x - player.getPosition().x;
 		float canonPlayerHeight = getBody().getPosition().y - player.getPosition().y;
 		float angle = (float) Math.atan(canonPlayerHeight / canonPlayerWidth) * MathUtils.radiansToDegrees;
 
@@ -93,7 +92,6 @@ public class CanonTrap extends StaticEntitie {
 			angle = angle - 180;
 
 		// CANONBALLS
-		/**
 		 * if (time >= 180) { if (i >= 10) i = 0; int multiplierW = 1; int multiplierH =
 		 * 1; float hyp = (float) Math.sqrt(Math.pow(getBody().getWidth(), 2) +
 		 * Math.pow(getBody().getHeight() / 2, 2)); float bulletAngle = ((float)
@@ -116,7 +114,7 @@ public class CanonTrap extends StaticEntitie {
 		 * canonBalls[i].canBeRendered(true); i++; time = 0; } time++;
 		 **/
 
-		getBody().getBody().setTransform(getBody().getPosition(), angle / MathUtils.radiansToDegrees);
+		getBody().getBody().setTransform(getBody().getPosition(), 0/**angle / MathUtils.radiansToDegrees**/);
 
 		canonTexture.render(game, body.getPosition());
 		canonBaseTexture.render(game, body.getPosition());

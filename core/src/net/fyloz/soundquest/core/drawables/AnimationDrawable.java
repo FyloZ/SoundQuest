@@ -63,13 +63,19 @@ public class AnimationDrawable implements Drawable {
 	}
 
 	@Override
+	public void render(SoundQuest game, float x, float y) {
+		render(game, x, y, getWidth() / game.PPM, getHeight() / game.PPM);
+	}
+
+	@Override
 	public void render(SoundQuest game, float x, float y, float width, float height) {
 		if (cameraType == CameraType.Dynamic)
 			game.batch.setProjectionMatrix(game.dynamicCamera.combined);
 		if (cameraType == CameraType.Static)
 			game.batch.setProjectionMatrix(game.staticCamera.combined);
 		game.batch.begin();
-		game.batch.draw(getTextureRegion(), x - (getWidth() / game.PPM / 2), y - (getHeight() / game.PPM / 2), width, height);
+		game.batch.draw(getTextureRegion(), x - (getWidth() / game.PPM / 2), y - (getHeight() / game.PPM / 2), width,
+				height);
 		game.batch.end();
 	}
 

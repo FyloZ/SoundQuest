@@ -1,12 +1,16 @@
 package net.fyloz.soundquest;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import net.fyloz.soundquest.core.Interactables;
 import net.fyloz.soundquest.screens.LoadingBar;
 import net.fyloz.soundquest.screens.MainScreen;
 import net.fyloz.soundquest.utils.ResourceManager;
@@ -15,6 +19,8 @@ public class SoundQuest extends Game {
 	private FrameRate fps;
 	public SpriteBatch batch;
 	public AssetManager manager;
+	public ShapeRenderer shapeRenderer;
+	public Interactables inputs;
 
 	public MainScreen mainscreen;
 
@@ -23,10 +29,12 @@ public class SoundQuest extends Game {
 
 	private int wWidth;
 	private int wHeight;
-	
+
 	public float PPM = 16f;
-	
+
 	private boolean isFullscreen = false;
+
+	public HashMap<String, BitmapFont> fonts;
 
 	public SoundQuest(int width, int height) {
 		this.wWidth = width;
@@ -45,24 +53,30 @@ public class SoundQuest extends Game {
 		ResourceManager.getInstance().setStaticCamera(staticCamera);
 		ResourceManager.getInstance().setDynamicCamera(dynamicCamera);
 
+		inputs = new Interactables();
+		Gdx.input.setInputProcessor(inputs);
+
 		batch.begin();
 
 		fps = new FrameRate();
 		fps.resize(wWidth, wHeight);
 
 		batch.end();
+		shapeRenderer = new ShapeRenderer();
+		shapeRenderer.setProjectionMatrix(staticCamera.combined);
 		setScreen(new LoadingBar(this));
+		;
 	}
 
 	@Override
 	public void render() {
-		if(Gdx.input.isKeyJustPressed(Keys.F11)) {
+		if (Gdx.input.isKeyJustPressed(Keys.F11)) {
 			isFullscreen = !isFullscreen;
-			if(isFullscreen)
+			if (isFullscreen)
 				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 			else
 				Gdx.graphics.setWindowedMode(Gdx.graphics.getDisplayMode().width, Gdx.graphics.getDisplayMode().height);
-				//Gdx.graphics.setWindowedMode(640, 480);
+			// Gdx.graphics.setWindowedMode(640, 480);
 		}
 
 		super.render();
@@ -90,6 +104,12 @@ public class SoundQuest extends Game {
 
 	public void setManager(AssetManager manager) {
 		this.manager = manager;
+	}
+
+	public void addFont(String name, BitmapFont font) {
+		if (fonts == null)
+			fonts = new HashMap<>();
+		fonts.put(name, font);
 	}
 
 	public AssetManager getManager() {

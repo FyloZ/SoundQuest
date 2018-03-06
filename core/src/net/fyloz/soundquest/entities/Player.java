@@ -101,6 +101,8 @@ public class Player extends LivingEntitie {
 
 	@Override
 	public void render() {
+		if(this.getBody().getBody().getPosition().y <= 0)
+			this.setLife(0);
 		// Requis parce que la Sprite est en 32x42px au lieu de 16x16
 		float ratio = getBody().getHeight() / (idleSprite.getHeight() / (game.PPM * 2));
 		if (state == Moves.IDLE)

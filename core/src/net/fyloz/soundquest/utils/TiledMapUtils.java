@@ -13,6 +13,10 @@ import com.badlogic.gdx.math.Vector2;
 import net.fyloz.soundquest.Logger;
 
 public class TiledMapUtils {
+	
+	private TiledMapUtils() {
+	}
+	
 	public static TiledMap getTiledMap(String path) {
 		Logger.log(Logger.RESOURCE_LOADER, " Loaded map:" + path);
 		return new TmxMapLoader().load(path);
@@ -24,9 +28,8 @@ public class TiledMapUtils {
 		if (object instanceof PolylineMapObject) {
 			return ((PolylineMapObject) object).getPolyline();
 		} else {
-			System.out.println(
+			throw new IllegalStateException(
 					"[ERROR] the object with the id " + id + " in the layer " + layerName + " isn't a polyline!");
-			return null;
 		}
 	}
 
@@ -36,9 +39,8 @@ public class TiledMapUtils {
 		if (object instanceof RectangleMapObject) {
 			return ((RectangleMapObject) object).getRectangle();
 		} else {
-			System.out.println(
+			throw new IllegalStateException(
 					"[ERROR] the object with the id " + id + " in the layer " + layerName + " isn't a rectangle!");
-			return null;
 		}
 	}
 
@@ -56,6 +58,7 @@ public class TiledMapUtils {
 	}
 
 	public static Vector2 getRectanglePosition(Rectangle rect) {
-		return new Vector2((rect.getX() + rect.width / 2) / 16f, (rect.getY() + rect.height / 2) / 16f);
+		//La position en y doit être additionnée avec la moitié de la hauteur, je ne sais pas pourquoi...
+		return new Vector2((rect.getX()) / 16f + 1, (rect.getY() + rect.height / 2) / 16f);
 	}
 }

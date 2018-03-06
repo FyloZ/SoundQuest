@@ -37,7 +37,8 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java"
-
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
 
     dependencies {
         compile project(":core")
@@ -52,7 +53,8 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java"
-
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"

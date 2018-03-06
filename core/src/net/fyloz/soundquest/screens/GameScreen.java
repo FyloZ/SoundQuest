@@ -5,14 +5,19 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 
+import net.fyloz.soundquest.Camera.CameraType;
 import net.fyloz.soundquest.SoundQuest;
+import net.fyloz.soundquest.core.Initializable;
+import net.fyloz.soundquest.core.drawables.SpriteDrawable;
 import net.fyloz.soundquest.entities.Player;
 import net.fyloz.soundquest.steps.Level;
-import net.fyloz.soundquest.ui.GameGUI;
+import net.fyloz.soundquest.ui.TexturedButton;
+import net.fyloz.soundquest.ui.game.GameGUI;
 import net.fyloz.soundquest.utils.ResourceManager;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Initializable, Screen {
 	private SoundQuest game;
 	private Level level;
 	private Music music;
@@ -23,16 +28,21 @@ public class GameScreen implements Screen {
 
 	public GameScreen(SoundQuest game) {
 		this.game = game;
-		level = new Level("test", game);
+	}
+
+	@Override
+	public void initialize() {
+		game.setScreen(this);
+	}
+
+	@Override
+	public void show() {
+		level = new Level("test.tmx", game);
 
 		gui = new GameGUI(this.game);
 
 		music = (Music) game.manager.get("musics/detective.wav");
 		music.setLooping(true);
-	}
-
-	@Override
-	public void show() {
 		music.play();
 	}
 
