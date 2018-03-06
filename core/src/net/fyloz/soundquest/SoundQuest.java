@@ -79,6 +79,8 @@ public class SoundQuest extends Game {
 			// Gdx.graphics.setWindowedMode(640, 480);
 		}
 
+		inputs.checkMousePosition();
+
 		super.render();
 
 		fps.update();

@@ -64,13 +64,13 @@ public class MainScreen implements Screen {
 		if (gamescreen != null) {
 			gamescreen = null;
 		}
+		button.show();
 
 		gamescreen = new GameScreen(game);
 
 		game.batch.setProjectionMatrix(camera.combined);
 		music.play();
 
-		button.show();
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class ShapedButton implements Interactable {
 	@Override
 	public void onTouch(InteractType type, float x, float y, int pointer, int button) {
 		for (int input : inputs) {
-			if (button == input)
+			if (button == input) 
 				init.initialize();
 		}
 	}

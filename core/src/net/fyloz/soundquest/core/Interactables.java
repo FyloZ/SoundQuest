@@ -9,9 +9,11 @@ import com.badlogic.gdx.InputProcessor;
 public class Interactables implements InputProcessor {
 
 	public List<Interactable> interactables;
+	public List<Interactable> workingList;
 
 	public Interactables() {
 		interactables = new ArrayList<>();
+		workingList = new ArrayList<>();
 	}
 
 	public void registerInteractable(Interactable interactable) {
@@ -40,12 +42,15 @@ public class Interactables implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		int y = Gdx.graphics.getHeight() - screenY;
-		for (Interactable interactable : interactables) {
-			for (InteractType type : interactable.getAcceptedInteractions()) {
+		for (int i = 0; i < interactables.size(); i++) {
+			for (InteractType type : interactables.get(i).getAcceptedInteractions()) {
 				if (type.equals(InteractType.TOUCHDOWN)
-						&& (screenX >= interactable.getX() && screenX <= interactable.getX() + interactable.getWidth())
-						&& (y >= interactable.getY() && y <= interactable.getY() + interactable.getHeight())) {
-					//interactable.onTouch(InteractType.TOUCHDOWN, screenX, y, pointer, button);
+						&& (screenX >= interactables.get(i).getX()
+								&& screenX <= interactables.get(i).getX() + interactables.get(i).getWidth())
+						&& (y >= interactables.get(i).getY()
+								&& y <= interactables.get(i).getY() + interactables.get(i).getHeight())) {
+					// TODO Fait une erreur!!!
+					interactables.get(i).onTouch(InteractType.TOUCHDOWN, screenX, y, pointer, button);
 				}
 			}
 		}
@@ -55,12 +60,13 @@ public class Interactables implements InputProcessor {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		int y = Gdx.graphics.getHeight() - screenY;
-		for (Interactable interactable : interactables) {
-			for (InteractType type : interactable.getAcceptedInteractions()) {
-				if (type.equals(InteractType.TOUCHUP) && screenX >= interactable.getX()
-						&& screenX <= interactable.getX() + interactable.getWidth() && y >= interactable.getY()
-						&& y <= interactable.getY() + interactable.getHeight()) {
-					interactable.onTouch(InteractType.TOUCHUP, screenX, y, pointer, button);
+		for (int i = 0; i < interactables.size(); i++) {
+			for (InteractType type : interactables.get(i).getAcceptedInteractions()) {
+				if (type.equals(InteractType.TOUCHUP) && screenX >= interactables.get(i).getX()
+						&& screenX <= interactables.get(i).getX() + interactables.get(i).getWidth()
+						&& y >= interactables.get(i).getY()
+						&& y <= interactables.get(i).getY() + interactables.get(i).getHeight()) {
+					interactables.get(i).onTouch(InteractType.TOUCHUP, screenX, y, pointer, button);
 				}
 			}
 		}
@@ -70,12 +76,13 @@ public class Interactables implements InputProcessor {
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		int y = Gdx.graphics.getHeight() - screenY;
-		for (Interactable interactable : interactables) {
-			for (InteractType type : interactable.getAcceptedInteractions()) {
-				if (type.equals(InteractType.TOUCHDRAGGED) && screenX >= interactable.getX()
-						&& screenX <= interactable.getX() + interactable.getWidth() && y >= interactable.getY()
-						&& y <= interactable.getY() + interactable.getHeight()) {
-					interactable.onTouch(InteractType.TOUCHDRAGGED, screenX, y, pointer, 0);
+		for (int i = 0; i < interactables.size(); i++) {
+			for (InteractType type : interactables.get(i).getAcceptedInteractions()) {
+				if (type.equals(InteractType.TOUCHDRAGGED) && screenX >= interactables.get(i).getX()
+						&& screenX <= interactables.get(i).getX() + interactables.get(i).getWidth()
+						&& y >= interactables.get(i).getY()
+						&& y <= interactables.get(i).getY() + interactables.get(i).getHeight()) {
+					interactables.get(i).onTouch(InteractType.TOUCHDRAGGED, screenX, y, pointer, 0);
 				}
 			}
 		}
@@ -86,12 +93,13 @@ public class Interactables implements InputProcessor {
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		int y = Gdx.graphics.getHeight() - screenY;
-		for (Interactable interactable : interactables) {
-			for (InteractType type : interactable.getAcceptedInteractions()) {
-				if (type.equals(InteractType.MOUSEMOVED) && screenX >= interactable.getX()
-						&& screenX <= interactable.getX() + interactable.getWidth() && y >= interactable.getY()
-						&& y <= interactable.getY() + interactable.getHeight()) {
-					interactable.onMouseAbove(screenX, y);
+		for (int i = 0; i < interactables.size(); i++) {
+			for (InteractType type : interactables.get(i).getAcceptedInteractions()) {
+				if (type.equals(InteractType.MOUSEMOVED) && screenX >= interactables.get(i).getX()
+						&& screenX <= interactables.get(i).getX() + interactables.get(i).getWidth()
+						&& y >= interactables.get(i).getY()
+						&& y <= interactables.get(i).getY() + interactables.get(i).getHeight()) {
+					interactables.get(i).onMouseAbove(screenX, y);
 				}
 			}
 		}
@@ -100,8 +108,8 @@ public class Interactables implements InputProcessor {
 
 	@Override
 	public boolean scrolled(int amount) {
-		for (Interactable interactable : interactables) {
-			interactable.onScroll(amount);
+		for (int i = 0; i < interactables.size(); i++) {
+			interactables.get(i).onScroll(amount);
 		}
 		return true;
 	}
@@ -110,12 +118,13 @@ public class Interactables implements InputProcessor {
 		int x = Gdx.input.getX();
 		int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-		for (Interactable interactable : interactables) {
-			for (InteractType type : interactable.getAcceptedInteractions()) {
-				if (type.equals(InteractType.MOUSEPOSITION) && x >= interactable.getX()
-						&& x <= interactable.getX() + interactable.getWidth() && y >= interactable.getY()
-						&& y <= interactable.getY() + interactable.getHeight()) {
-					interactable.onMouseAbove(x, y);
+		for (int i = 0; i < interactables.size(); i++) {
+			for (InteractType type : interactables.get(i).getAcceptedInteractions()) {
+				if (type.equals(InteractType.MOUSEPOSITION) && x >= interactables.get(i).getX()
+						&& x <= interactables.get(i).getX() + interactables.get(i).getWidth()
+						&& y >= interactables.get(i).getY()
+						&& y <= interactables.get(i).getY() + interactables.get(i).getHeight()) {
+					interactables.get(i).onMouseAbove(x, y);
 				}
 			}
 		}
